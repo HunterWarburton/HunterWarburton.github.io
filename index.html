@@ -1,4 +1,99 @@
-<html>
-    <h1>Hunter's Portfolio</h1>
-    <img src="./MyImage.jpg"/>
+<!doctype html>
+<html lang="en-US">
+
+<!--- This section will style the page
+the * sets everything
+sections specific styling can be specified with class name
+--->
+<style>
+    .disisheader {text-align: center;}
+		.disisheader ul{
+		display: inline-block;
+		margin: 0;
+		padding:0;
+	}
+	.maintext {
+		display: inline-block;
+		text-align:right;
+	}
+	.thirdthing ol{
+		display: block;
+		margin: 0;
+		padding:0;
+	}
+</style>
+
+<header class="disisheader">
+    <h1>My First Webpage</h1>
+    <!--- load an image, 
+        describe image for accessibility
+        set its size to a specified value--->
+    <img src="./1.jpg"
+        alt="A colorful donut shaped simple round logo"
+        width = 250
+        height = 300>
+        <p>Me</p>
+
+        <h1><a href="./Website/StarField.html">Starfield Space Shooter</a></h1>
+        
+        <!--- Navigation to sections of this page
+            uses class names of sections defined in this page as hyperlinks
+            --->
+  <div>
+    <h4>A List Of Links that scroll you to the proper section of this page</h4>
+        <!---<h5>if it were actually big and you needed to scroll</h5>--->
+    <nav>
+      <ul>
+        <li><a href="#maintext">FACTS</a></li>
+        <li><a href="#links">Clicky Links</a></li>
+        <li><a href="#thirdthing">Section #3</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<body>
+<!--- Main Container --->
+<div class="container"> 
+ 
+   
+  <!--- maintext Section --->
+  <section class="maintext" id="maintext">
+    <h2 class="hidden">FACTS</h2>
+    <p class="text_column">The Earth is flat but at the same time it is also hollow and filled with Mole-Men.</p>
+    <p class="text_column">Birds aren't real; they used to be but have since been replaced by government drones.</p>
+    <p class="text_column">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor. </p>
+    <p class="text_column">The Illuminati are hiding the color Blurple from the people. </p>
+   </section>
+  
+  <!--- Links Section --->
+  <section class="links" id="links">
+    <h2 class="hidden">Here is a section of text that you can click on</h2>
+   
+    <p><a href="https://example.com/the-planet-earth/">This is a Hyperlink example</a></p>
+  </section>
+  
+  <!--- Illuminati Section --->
+  <section class="thirdthing" id="thirdthing">
+    <h2 class="hidden">Section #3 and ordered list</h2>
+    <div>
+	  <ol>
+	  	<li>1) Mole-Men</li>
+	  	<li>2) Bird Drones</li>
+	  	<li>3) Blurple</li>
+	  </ol>
+	  </div>
+  </section>
+  
+
+  <!-- Footer Section -->
+  <section class="footer_banner" id="contact">
+    <h2 class="hidden">Footer Banner Section </h2>
+    <p>Made on Friday, <time datetime="2022-02-18">18 February 2022</time> by Hunter Warburton</p>
+</section>
+ 
+
+  </div>
+
+</body>
 </html>
