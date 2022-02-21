@@ -11,6 +11,12 @@ var laserTimerResetti = 60;
 var gunTimer = 20;
 var gunTimerResetti = 20;
 
+var baddieTimer = 100;//timer for when to start spawning enemies
+var patternTimer = 100;//timer used for the actual spawning patterns
+var currentlySpawning = false;//flag for if the spawning is happening
+//flag for which spawn pattern to do
+var spawnPattern = 'SeekerMass';
+
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
@@ -141,16 +147,52 @@ function gameTick () {
         });
     });
     
-
 //Only spawn baddie sometimes not every frame
-var baddie = getRandomInt(0,11);
-        if (baddie == 10) {
-    spawnEnemy();
-        }
+//Every 10 seconds do a new spawn pattern
+//when timer reaches 0, flag a random pattern to begin spawning
+//when that pattern finishes its own timer, then reset the timer countdown
+if (!currentlySpawning) {
+    baddieTimer--;
+} else {
+    dotheSpawning();
+}
+if (baddieTimer == 0) {
+    //flag a random pattern to begin
+    //**TODO make this random */
+    switch (getRandomInt(1,6)) {
+        case 1 :
+            spawnPattern = 'SeekerMass';
+            patternTimer = 600;
+        break;
+        case 2 :
+            spawnPattern = 'TankRun';
+            patternTimer = 600;
+        break;
+        case 3 :
+            spawnPattern = 'BouncerSpawn';
+            patternTimer = 600;
+        break;
+        case 4 :
+            spawnPattern = 'InvaderSpawn';
+            patternTimer = 600;
+        break;
+        case 5 :
+            spawnPattern = 'BossSpawn';
+            patternTimer = 6000;
+        break;
+    }
+    
+    currentlySpawning = true;
+
+    baddieTimer = 300;//reset timer
+}
+
+
+
+
         //Spawn powerup
-var power = getRandomInt(0,100);
-        if (baddie == 0) {
-    spawnPowerup();
+        if (getRandomInt(0,100) == 0) {
+            spawnPowerup();
         }
 
         //Shoot every second
@@ -193,6 +235,49 @@ var power = getRandomInt(0,100);
 }
 setInterval(gameTick, 30);
 
+//spawnpattern: mass of seekers
+//spawn a seeker every few frames for a while
+    function dotheSpawning (){
+        //console.log(patternTimer);
+        switch (spawnPattern) {
+        case 'SeekerMass' : //just spawn a bunch
+            if (Number.isInteger(patternTimer/5)) {
+                spawnEnemy('seeker');
+            }
+        break;
+        case 'TankRun' :
+            //Spawn sets of 3 tanks
+            if (patternTimer == 600 || patternTimer == 400 || patternTimer == 200 || patternTimer == 10) {
+                for (let i = 3; i >0; i--) {
+                    spawnEnemy('tank');
+                }
+            }
+        break;
+        case 'BouncerSpawn' ://spawn bouncers in sets of two
+            if (Number.isInteger(patternTimer/50)) {
+                spawnEnemy('bouncer');
+                spawnEnemy('bouncer');
+            }
+        break;
+        case 'InvaderSpawn' :
+            if (Number.isInteger(patternTimer/50)) {
+                spawnEnemy('invader');
+            }
+        break;
+        case 'BossSpawn' :
+            if (patternTimer == 6000) {
+                spawnEnemy('boss');
+            }
+        break;
+        }
+        //check if done spawning
+        if (patternTimer == 0) {
+            currentlySpawning = false;
+        } else {
+            patternTimer--;
+        }
+    }
+
 
 /*PLAYER SHIP AREA*/
 const theShip = document.getElementById('ship');
@@ -206,7 +291,7 @@ canvas.addEventListener("mousemove", function(e) {
     mouseX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas 
     mouseY = Math.round(e.clientY - cRect.top);   // from the X/Y positions to make  
 });
-
+//Draw the player ship, set size to 50x50
 function drawShip () {
     ctx.drawImage(theShip, mouseX-25, mouseY-25, 50, 50);
 }
@@ -241,7 +326,7 @@ function moveLaser(){
         //check and erase bullet if off any of 4 sides
         if (laser.posY > canvas.height+5 || laser.posY < -5){
             laserArray.splice(laserArray.indexOf(laser), 1);
-            console.log ("erased a laser  offscreen");
+            //console.log ("erased a laser  offscreen");
         }
         laserCollision(laser);
     });
@@ -281,7 +366,7 @@ function moveGun(){
         //check and erase bullet if off any of 4 sides
         if (gun.posY > canvas.height+5 || gun.posY < -5){
             gunArray.splice(gunArray.indexOf(gun), 1);
-            console.log ("erased a gun  offscreen");
+            //console.log ("erased a gun  offscreen");
         }
         gunCollision(gun);
     });
@@ -302,7 +387,7 @@ function drawGun(){
 function bulletCollision(bullet) {
 if (bullet.posX > mouseX-10 && bullet.posX < mouseX+10
     && bullet.posY > mouseY-10 && bullet.posY < mouseY+10) {
-        //collision has occured
+        //collision has occured - Enemy bullet hit player
         baddieBulletArray.splice(baddieBulletArray.indexOf(bullet), 1);//erase that bullet
         myScore--;
         updateScore();
@@ -312,10 +397,10 @@ if (bullet.posX > mouseX-10 && bullet.posX < mouseX+10
 
 function laserCollision(laser) {
     enemyArray.forEach((enemy) => {
-        if (laser.posX > enemy.posX-12 && laser.posX < enemy.posX+12
-        && laser.posY > enemy.posY-10 && laser.posY < enemy.posY+10) {
-            //collision has occured
-            enemyArray.splice(enemyArray.indexOf(enemy), 1);//erase that enemy
+        if (laser.posX > enemy.posX-(enemy.size/2) && laser.posX < enemy.posX+(enemy.size/2)
+        && laser.posY > enemy.posY-(enemy.size/2) && laser.posY < enemy.posY+(enemy.size/2)) {
+            //collision has occured - player laser hit enemy
+            enemy.takeDamage(enemy,2);//deal damage to that enemy
             laserArray.splice(laserArray.indexOf(laser), 1);//erase this laser
             myScore++;
             updateScore();
@@ -326,10 +411,10 @@ function laserCollision(laser) {
 
 function gunCollision(gun) {
     enemyArray.forEach((enemy) => {
-        if (gun.posX > enemy.posX-12 && gun.posX < enemy.posX+12
-        && gun.posY > enemy.posY-10 && gun.posY < enemy.posY+10) {
+        if (gun.posX > enemy.posX-(enemy.size/2) && gun.posX < enemy.posX+(enemy.size/2)
+        && gun.posY > enemy.posY-(enemy.size/2) && gun.posY < enemy.posY+(enemy.size/2)) {
             //collision has occured
-            enemyArray.splice(enemyArray.indexOf(enemy), 1);//erase that enemy
+            enemy.takeDamage(enemy,1);
             gunArray.splice(gunArray.indexOf(gun), 1);//erase this laser
             myScore++;
             updateScore();
@@ -357,48 +442,111 @@ function powerupCollision(powerup) {
 //BADDIES
 let enemyArray = [];
 /*define an enemy object*/
+/*Enemy movement Types:
+seeker - original red that moves in front of you
+tank - just falls down but shoots at ya
+bouncer - moves back and forth, left to right
+invader - picks a cardinal direction and moves that way for a time, random
+boss - falls to a certain Y, then stays there
+*/
+const seekerEnemy = document.getElementById('seekerEnemy');
+const tankEnemy = document.getElementById('tankEnemy');
+const bouncerEnemy = document.getElementById('bouncerEnemy');
+const invaderEnemy = document.getElementById('invaderEnemy');
+const bossEnemy = document.getElementById('bossEnemy');
+
 const enemy = {
     speedSideways : 0.5,
     speedDownwards : 2,
     size : 5,
     posX : 0,
     posY : 0,
-    color : '#000000'
+    color : '#000000',
+    hp : 1,
+    image : seekerEnemy,
+    movementType: 'string',
+    baddieVar : 0,//a spare space for the baddie info
+    takeDamage : function (thisEnemy, damage){
+        thisEnemy.hp -= damage;
+        if (thisEnemy.hp <1) {
+            if (thisEnemy.movementType == 'boss') {
+                patternTimer = 0;
+            }
+            enemyArray.splice(enemyArray.indexOf(thisEnemy), 1);
+        }
+    }
 };
 
-function spawnEnemy () {
+function spawnEnemy (typeofEnemytoSpawn) {
     let babyEnemy = Object.create(enemy);
     babyEnemy.posX = Math.floor(Math.random()*canvas.width);/*random spot width*/
     babyEnemy.posY = Math.floor(Math.random()*(-canvas.height/4));/*slightly above height display*/
-    
     //This Enemy Stats
+switch (typeofEnemytoSpawn) {
+    case 'seeker':
         babyEnemy.speedSideways = Math.random()*5+1;
-        babyEnemy.speedDownwards = Math.random()*10;
-        //babyEnemy.size = 6;
+        babyEnemy.speedDownwards = Math.random()*5+1;
+        babyEnemy.size = 30;
         babyEnemy.color = '#ff0050';
+        babyEnemy.hp = 1;
+        babyEnemy.movementType = typeofEnemytoSpawn;
+        babyEnemy.image = seekerEnemy;
+    break;
+    case 'tank':
+        babyEnemy.speedSideways = 0;
+        babyEnemy.speedDownwards = 2;
+        babyEnemy.size = 100;
+        babyEnemy.color = '#aa2020';
+        babyEnemy.hp = 10;
+        babyEnemy.movementType = typeofEnemytoSpawn;
+        babyEnemy.image = tankEnemy;
+    break;
+    case 'bouncer':
+        babyEnemy.speedSideways = getRandomInt(1,8)/5+3;;
+        babyEnemy.speedDownwards = getRandomInt(2,4);;
+        babyEnemy.size = 80;
+        babyEnemy.color = '#ff9090';
+        babyEnemy.hp = getRandomInt(3,8);;
+        babyEnemy.movementType = typeofEnemytoSpawn;
+        babyEnemy.image = bouncerEnemy;
+    break;
+    case 'invader':
+        babyEnemy.speedSideways = 6;
+        babyEnemy.speedDownwards = 6;
+        babyEnemy.size = 50;
+        babyEnemy.color = '#ff20aa';
+        babyEnemy.hp = 5;
+        babyEnemy.movementType = typeofEnemytoSpawn;
+        babyEnemy.image = invaderEnemy;
+    break;
+    case 'boss':
+        babyEnemy.speedSideways = 0;
+        babyEnemy.speedDownwards = 2;
+        babyEnemy.size = 300;
+        babyEnemy.color = '#FFaa20';
+        babyEnemy.hp = 100;
+        babyEnemy.movementType = typeofEnemytoSpawn;
+        babyEnemy.image = bossEnemy;
+        babyEnemy.posX = canvas.width/2;
+    break;
+
+}
 
     enemyArray.push(babyEnemy);
 }
 
+//Enemy drawing section
 function drawBaddies(){
-
         enemyArray.forEach((enemy) => {
-            ctx.beginPath();
-            ctx.arc(enemy.posX, enemy.posY, enemy.size, 0, 2 * Math.PI, false);
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = enemy.color; /*color*/
-            ctx.stroke();
+            ctx.drawImage(enemy.image, enemy.posX-enemy.size/2, enemy.posY-enemy.size/2, enemy.size, enemy.size);
         });
-
-   
-
 }
 
-
-
 function moveBaddies(){
-
+    //scroll through every enemy and make it move
     enemyArray.forEach((enemy) => {
+        //Enemies should spawn bullets sometimes
+
         //shoot area
         //each enemy shoots if random number
         var shootie = getRandomInt(0,101);
@@ -406,13 +554,91 @@ function moveBaddies(){
             spawnBullet(enemy);
         } 
 
-        if (enemy.posX > mouseX+12){
-            enemy.posX -= enemy.speedSideways;
-        } else if (enemy.posX < mouseX-12) {
-            enemy.posX += enemy.speedSideways;
-        }
+        //Actual enemy movement
+        switch (enemy.movementType) {
+            case 'seeker':
+                if (enemy.posX > mouseX+12){
+                    enemy.posX -= enemy.speedSideways;
+                } else if (enemy.posX < mouseX-12) {
+                    enemy.posX += enemy.speedSideways;
+                }
+            break;
+            case 'tank':
+                //nothing special, they just fall down
+            break;
+            case 'bouncer':
+                if (enemy.posX > canvas.width-enemy.size){//bouncer got to the right of the screen
+                    enemy.baddieVar = 1;
+                } else if (enemy.posX < enemy.size) {
+                    enemy.baddieVar = 0;
+                }
+                if (enemy.baddieVar == 1) {//go left now
+                    enemy.posX -= enemy.speedSideways;
+                } else {
+                enemy.posX += enemy.speedSideways;
+                }
+            break;
+            case 'invader'://pick a random direction, go that way
+            if (enemy.baddieVar == 0) {//Pick a direction at timer 0, then reset its timer
+                switch (getRandomInt(1,9)) {
+                    case 1 ://northwest
+                        enemy.speedSideways = -3;
+                        enemy.speedDownwards = -1;
+                    break;
+                    case 2 ://north
+                        enemy.speedSideways = 0;
+                        enemy.speedDownwards = -2;
+                    break;
+                    case 3 ://northeast
+                        enemy.speedSideways = 3;
+                        enemy.speedDownwards = -1;
+                    break;
+                    case 4 ://west
+                        enemy.speedSideways = -4;
+                        enemy.speedDownwards = 2;
+                    break;
+                    case 5 ://east
+                        enemy.speedSideways = 4;
+                        enemy.speedDownwards = 2;
+                    break;
+                    case 6 ://southwest
+                        enemy.speedSideways = -3;
+                        enemy.speedDownwards = 4;
+                    break;
+                    case 7 ://south
+                        enemy.speedSideways = 0;
+                        enemy.speedDownwards = 5;
+                    break;
+                    case 8 ://southeast
+                        enemy.speedSideways = 3;
+                        enemy.speedDownwards = 4;
+                    break;
+                }
+
+                enemy.baddieVar = 100;
+            } else {
+                //These guys need help not going off screen
+                if (enemy.posX > canvas.width-(enemy.size/2)){//bouncer got to the right of the screen
+                    enemy.speedSideways = -3;
+                } else if (enemy.posX < enemy.size/2) {
+                    enemy.speedSideways = 3;
+                }
+                if (enemy.posY < enemy.size) {
+                    enemy.speedDownwards = 5;
+                }
+                enemy.posX +=  enemy.speedSideways;
+                enemy.baddieVar--;
+            }
         
+            break;
+            case 'boss'://boss must stop moving downward and only be destroyed by player
+                if (enemy.posY > canvas.height/3) {
+                    enemy.speedDownwards = 0;
+                }
+            break;
+        }
         enemy.posY +=  enemy.speedDownwards;
+
         //check and erase an enemy if its too low
         if (enemy.posY > canvas.height+5) {
             enemyArray.splice(enemyArray.indexOf(enemy), 1);
@@ -535,9 +761,9 @@ function movePowerup(){
     powerupArray.forEach((powerup) => {
         powerup.posY += powerup.speed;
         //check and erase bullet if off any of 4 sides
-        if (powerup.posY > canvas.height+5 || powerup.posY < -5){
+        if (powerup.posY > canvas.height+5 || powerup.posY < -canvas.height/4){
             powerupArray.splice(powerupArray.indexOf(powerup), 1);
-            console.log ("erased a powerup offscreen");
+            //console.log ("erased a powerup offscreen");
         }
         powerupCollision(powerup);
     });
