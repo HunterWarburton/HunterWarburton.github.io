@@ -6,10 +6,6 @@ var spawnTimer1 = 0;
 var spawnTimer2 = 0;
 var spawnTimer3 = 0;
 var myScore = 0;
-var laserTimer = 60;
-var laserTimerResetti = 60;
-var gunTimer = 20;
-var gunTimerResetti = 20;
 
 var baddieTimer = 100;//timer for when to start spawning enemies
 var patternTimer = 100;//timer used for the actual spawning patterns
@@ -37,6 +33,8 @@ var y = canvas.height-30;
 var dx = 2;
 var dy = -2;
 
+var mouseX = 0;
+var mouseY = 0;
 
 
 
@@ -80,18 +78,18 @@ function spawnStars (field) {
     //HOW FAST DO THEY MOVE
     switch (field) {
         case 0:
-            babyStar.speed = 4;
-            babyStar.size = 4;
+            babyStar.speed = 3;
+            babyStar.size = 3;
             babyStar.color = '#a0a0ff';
             break;
         case 1:
-            babyStar.speed = 2;
-            babyStar.size = 2.5;
+            babyStar.speed = 1.5;
+            babyStar.size = 2.25;
             babyStar.color = '#50aaff';
             break;
         case 2:
             babyStar.speed = 0.5;
-            babyStar.size = 1.5;
+            babyStar.size = 1;
             babyStar.color = '#00aaff';
             break;
         case 3:
@@ -115,6 +113,9 @@ function moveStar(muhStarField){
     });
 }
 
+/*OnGameLoad*/
+
+
 /*MAIN GAME TICK*/
 function gameTick () {
     //Clear Drawings of old stuff
@@ -128,16 +129,15 @@ function gameTick () {
     
     moveBaddies();
     moveBullets();
-    moveLaser();
-    moveGun();
+    movePlayerBullets();
     movePowerup();
 
 /*DRAW THINGS*/
+    drawWeaponUI ()
     drawPowerup();
     drawBullet();
-    drawShip();
-    drawLaser();
-    drawGun();
+    drawPlayerShip();
+    drawPlayerBullets();
     drawBaddies();
 
     //Draw the Stars
@@ -181,13 +181,10 @@ if (baddieTimer == 0) {
             patternTimer = 6000;
         break;
     }
-    
-    currentlySpawning = true;
 
+    currentlySpawning = true;
     baddieTimer = 300;//reset timer
 }
-
-
 
 
         //Spawn powerup
@@ -195,17 +192,9 @@ if (baddieTimer == 0) {
             spawnPowerup();
         }
 
-        //Shoot every second
-        //Countdown to 0
-        if (laserTimer < 0) {
-            spawnLaser();
-            laserTimer = laserTimerResetti;
-        } else {laserTimer--;}
+        //Shoot the Player Bullets
+        shootPlayerBullets();
 
-        if (gunTimer < 0) {
-            spawnGun();
-            gunTimer = gunTimerResetti;
-        } else {gunTimer--;}
 
     /*spawn a new star sometimes*/
     //HOW MANY TO SPAWN
@@ -230,11 +219,12 @@ if (baddieTimer == 0) {
     } else {spawnTimer3++;}
 
 
-
-
+    //must erase things at the end of game tick
+    erasePlayerBullets();
 }
 setInterval(gameTick, 30);
 
+/*ENEMY SPAWN*/
 //spawnpattern: mass of seekers
 //spawn a seeker every few frames for a while
     function dotheSpawning (){
@@ -278,110 +268,13 @@ setInterval(gameTick, 30);
         }
     }
 
-
-/*PLAYER SHIP AREA*/
-const theShip = document.getElementById('ship');
-
-var mouseX = 0;
-var mouseY = 0;
-
 //Get X and Y of mouse Pos
 canvas.addEventListener("mousemove", function(e) { 
     var cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
     mouseX = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas 
     mouseY = Math.round(e.clientY - cRect.top);   // from the X/Y positions to make  
 });
-//Draw the player ship, set size to 50x50
-function drawShip () {
-    ctx.drawImage(theShip, mouseX-25, mouseY-25, 50, 50);
-}
-/*END PLAYER SHIP AREA*/
-/*BEGIN PLAYER BULLET AREA*/
-let laser = {
-    posX : 0,
-    posY : 0,
-    speed : 4
-}
-var laserArray = [];
 
-function spawnLaser(){
-    let babyLaser = Object.create(laser);//Make a brand new bullet
-    babyLaser.posX=mouseX-15;
-    babyLaser.posY=mouseY;
-
-    let babyLaser2 = Object.create(laser);//Make a brand new bullet
-    babyLaser2.posX=mouseX+15;
-    babyLaser2.posY=mouseY;
-
-    laserArray.push(babyLaser);
-    laserArray.push(babyLaser2);
-
-
-    //console.log("spawned a laser");
-}
-
-function moveLaser(){
-    laserArray.forEach((laser) => {
-        laser.posY -= laser.speed;
-        //check and erase bullet if off any of 4 sides
-        if (laser.posY > canvas.height+5 || laser.posY < -5){
-            laserArray.splice(laserArray.indexOf(laser), 1);
-            //console.log ("erased a laser  offscreen");
-        }
-        laserCollision(laser);
-    });
-}
-
-function drawLaser(){
-    //console.log("laser move"); success
-    laserArray.forEach((laser) => {
-        ctx.beginPath();
-        ctx.arc(laser.posX, laser.posY, 6, 0, 2 * Math.PI, false);
-        ctx.lineWidth = 4;
-        ctx.fillStyle = '#00ff00'; /*color*/
-        ctx.fill();
-    });
-}
-
-
-let gun = {
-    posX : 0,
-    posY : 0,
-    speed : 4
-}
-var gunArray = [];
-
-function spawnGun(){
-    let babyGun = Object.create(gun);//Make a brand new bullet
-    babyGun.posX=mouseX;
-    babyGun.posY=mouseY;
-
-    gunArray.push(babyGun);
-    //console.log("spawned a gun bullet for the player");
-}
-
-function moveGun(){
-    gunArray.forEach((gun) => {
-        gun.posY -= gun.speed;
-        //check and erase bullet if off any of 4 sides
-        if (gun.posY > canvas.height+5 || gun.posY < -5){
-            gunArray.splice(gunArray.indexOf(gun), 1);
-            //console.log ("erased a gun  offscreen");
-        }
-        gunCollision(gun);
-    });
-}
-
-function drawGun(){
-    //console.log("gun move"); success
-    gunArray.forEach((gun) => {
-        ctx.beginPath();
-        ctx.arc(gun.posX, gun.posY, 5, 0, 2 * Math.PI, false);
-        ctx.lineWidth = 4;
-        ctx.fillStyle = '#50aa50'; /*color*/
-        ctx.fill();
-    });
-}
 
 /*COLLISION SECTION*/
 function bulletCollision(bullet) {
@@ -394,50 +287,6 @@ if (bullet.posX > mouseX-10 && bullet.posX < mouseX+10
     }
 
 }
-
-function laserCollision(laser) {
-    enemyArray.forEach((enemy) => {
-        if (laser.posX > enemy.posX-(enemy.size/2) && laser.posX < enemy.posX+(enemy.size/2)
-        && laser.posY > enemy.posY-(enemy.size/2) && laser.posY < enemy.posY+(enemy.size/2)) {
-            //collision has occured - player laser hit enemy
-            enemy.takeDamage(enemy,2);//deal damage to that enemy
-            laserArray.splice(laserArray.indexOf(laser), 1);//erase this laser
-            myScore++;
-            updateScore();
-            //console.log("erased a laser for collision");
-        }
-    });
-}
-
-function gunCollision(gun) {
-    enemyArray.forEach((enemy) => {
-        if (gun.posX > enemy.posX-(enemy.size/2) && gun.posX < enemy.posX+(enemy.size/2)
-        && gun.posY > enemy.posY-(enemy.size/2) && gun.posY < enemy.posY+(enemy.size/2)) {
-            //collision has occured
-            enemy.takeDamage(enemy,1);
-            gunArray.splice(gunArray.indexOf(gun), 1);//erase this laser
-            myScore++;
-            updateScore();
-            //console.log("erased a gun for collision");
-        }
-    });
-}
-
-function powerupCollision(powerup) {
-    if (powerup.posX > mouseX-10 && powerup.posX < mouseX+10
-        && powerup.posY > mouseY-10 && powerup.posY < mouseY+10) {
-            //collision has occured
-            powerupArray.splice(powerupArray.indexOf(powerup), 1);//erase that powerup
-            myScore++;
-            updateScore();
-            if (laserTimerResetti > 10) {
-                laserTimerResetti -= 5;
-            }
-            
-        }
-    
-    }
-
 
 //BADDIES
 let enemyArray = [];
@@ -719,52 +568,5 @@ function drawBullet(){
         ctx.lineWidth = 4;
         ctx.fillStyle = '#ffff00'; /*color*/
         ctx.fill();
-    });
-}
-
-
-
-//POWERUP SECTION
-//Make a powerup that reduces gun cooldown
-let powerupArray = [];
-/*define an powerup object*/
-const powerup = {
-    speed : 2,
-    posX : 0,
-    posY : 0,
-};
-
-function spawnPowerup () {
-    let babyPowerup = Object.create(powerup);
-    babyPowerup.posX = Math.floor(Math.random()*canvas.width);/*random spot width*/
-    babyPowerup.posY = Math.floor(Math.random()*(-canvas.height/4));/*slightly above height display*/
-    
-    powerupArray.push(babyPowerup);
-}
-
-function drawPowerup(){
-    powerupArray.forEach((powerup) => {
-        ctx.beginPath();
-        ctx.arc(powerup.posX, powerup.posY, 8, 0, 2 * Math.PI, false);
-        //ctx.lineWidth = 4;
-        ctx.fillStyle = '#bbbbff'; /*color*/
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(powerup.posX, powerup.posY, 8, 0, 2 * Math.PI, false);
-        ctx.lineWidth = 6;
-        ctx.strokeStyle = '#ffffff'; /*color*/
-        ctx.stroke();
-    });
-}
-
-function movePowerup(){
-    powerupArray.forEach((powerup) => {
-        powerup.posY += powerup.speed;
-        //check and erase bullet if off any of 4 sides
-        if (powerup.posY > canvas.height+5 || powerup.posY < -canvas.height/4){
-            powerupArray.splice(powerupArray.indexOf(powerup), 1);
-            //console.log ("erased a powerup offscreen");
-        }
-        powerupCollision(powerup);
     });
 }
