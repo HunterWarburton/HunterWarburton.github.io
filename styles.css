@@ -1,0 +1,165 @@
+	.navbar {
+		float:inherit;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 45px;
+		z-index: 999;
+		position: fixed;
+		background-image: linear-gradient(to right, rgba(255,0,0,1), rgba(255,255,255,1), rgba(0,0,255,1));
+		color: black;
+	}
+	
+
+	
+	.a:hover {
+		color: black;
+		
+	}
+		.big-eyes-holder {
+		position: relative;
+		z-index: 998;
+	}
+
+	.bg-image {
+  /* The image used */
+  background-image: url("images/4NjTq5yY_4x.jpg");
+filter: blur(8px);
+  -webkit-filter: blur(8px);
+  
+
+  /* Full height */
+  height: 90em;
+  background-position-y: 1em;
+  
+
+  /* Center and scale the image nicely */
+  background-position: absolute;
+  background-repeat:repeat-y;
+  background-size:cover;
+		background-color: #000000;
+}
+/* Position text in the middle of the page/image */
+	
+.my-content {
+  /*background-color: rgb(0,0,0); /* Fallback color */
+  /*background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+	background-image: url("images/4NjTq5yY_4x.jpg");
+	background-position:top;
+    background-position-y: -5em;
+  background-repeat:repeat-y;
+  background-size:cover;
+	
+  color: white;
+  font-weight: bold;
+  /*border: 3px solid #f1f1f1;*/
+  position:absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%,0%);
+  z-index: 2;
+  /*width: 80%;*/
+  /*padding: 20px;*/
+	max-width: 1175px;
+	margin: auto;
+  text-align: center;
+}
+	.well {
+		background-color: rgba(0,0,0, 0.9);
+	}
+	
+	
+	.billboard {
+		color: black;
+		font-size: 50px;
+		font:bold;
+		background-image: linear-gradient(to right, rgba(255,0,0,0.0), rgba(255,0,0,0.5), rgba(255,255,255,0.5), rgba(255,255,255,0.5), rgba(0,0,255,0.5), rgba(0,0,255,0.0));
+	}
+	.secondary-text {
+		color: black;
+		background-image: linear-gradient(to right, rgba(255,0,0,0.0), rgba(255,0,0,0.3), rgba(255,255,255,0.4), rgba(255,255,255,0.4), rgba(0,0,255,0.3), rgba(0,0,255,0.0));
+	}
+	
+.black-text {
+		color: white;
+		background-color: rgba(0,0,0, 0.9);
+	}
+	
+	.colorgrad {
+		border:thick;
+		border-style: solid;
+		border-color: black;
+		background-image: linear-gradient(to right, rgba(255,0,0,0.2), rgba(255,0,0,0.6), rgba(0,0,0,0.4), rgba(0,0,0,0.4), rgba(0,0,255,0.6), rgba(0,0,255,0.2));
+	}
+	
+	.li {
+		color: black;
+	}
+	
+	.myButton {
+	box-shadow: 3px 4px 0px 0px #8a2a21;
+	background:linear-gradient(to bottom, #e62210 5%, #d46a6a 100%);
+	background-color:#e62210;
+	border-radius:18px;
+	border:1px solid #0f0201;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:7px 25px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #810e05;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #d46a6a 5%, #e62210 100%);
+	background-color:#d46a6a;
+}
+.myButton:active, .myButtonB:active, .myButtonC:active {
+	position:relative;
+	top:1px;
+}
+
+	.myButtonB {
+	box-shadow: 3px 4px 0px 0px #2a218a;
+	background:linear-gradient(to bottom, #1022e6 5%, #6a6ad4 100%);
+	background-color:#1022e6;
+	border-radius:18px;
+	border:1px solid #01020f;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:7px 25px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #050e81;
+}
+.myButtonB:hover {
+	background:linear-gradient(to bottom, #6a6ad4 5%, #1022e6 100%);
+	background-color:#d46a6a;
+}
+
+	.myButtonC {
+	box-shadow: 3px 4px 0px 0px #2a2a2a;
+	background:linear-gradient(to bottom, #a6a6a6 5%, #6a6a6a 100%);
+	background-color:#a6a6a6;
+	border-radius:18px;
+	border:1px solid #020202;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:7px 25px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #0e0e0e;
+}
+.myButtonC:hover {
+	background:linear-gradient(to bottom, #6a6a6a 5%, #a6a6a6 100%);
+	background-color:#d46a6a;
+}
+	
+	.dropdown:hover .dropdown-menu {
+  display: block;
+}
