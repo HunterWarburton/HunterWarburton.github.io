@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Live Bus Tracker</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
+<style>
+  body { margin: 0; padding: 0; }
+  #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  .map-overlay {
+    position: absolute;
+    left: 0;
+    padding: 10px;
+  }
+</style>
+<link rel="stylesheet" href="../css/bootstrap.css">
+<style type="text/css">
+	.navbar {
+	  float:inherit;
+	  top: 0px;
+	  left: 0px;
+	  width: 100%;
+	  height: 45px;
+	  z-index: 999;
+	  position: fixed;
+	  background-image: linear-gradient(to right, rgba(255,0,0,1), rgba(255,255,255,1), rgba(0,0,255,1));
+	  color: black;
+	}
+	
+	.a:hover {
+	  color: black;
+	}
+	</style>
+
+</head>
+<body>
+
+
+	<nav class="navbar navbar-default">
+		<div class="container">
+		  <!-- Brand and toggle get grouped for better mobile display -->
+		  <div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myDefaultNavbar1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+			<a class="navbar-brand" href="#" style="color: black">HUNTER WARBURTON</a></div>
+		  <!-- Collect the nav links, forms, and other content for toggling -->
+		  <div class="collapse navbar-collapse" id="myDefaultNavbar1">
+			<ul class="nav navbar-nav">
+			 
+			  <li><a href="../index.html">Home</a></li>
+			  
+			  <li><a href="../StarfieldShooter/StarField.html">Space Shooter</a></li>
+			  <li><a href="../Fireworks/Fireworks.html">Fireworks</a></li>
+			  <li><a href="../EyeTracker/Eye Tracker.html">Eyes</a></li>
+			  <li class="active"><a href="LiveBusTracker.html">Bus Tracker<span class="sr-only">(current)</span></a></li>
+			  <li><a href="../PacFactory/Pac Factory.html">Pac Factory</a></li>
+			  
+			</ul>
+	  
+		  </div>
+		  <!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	  </nav>
+	  
+
+<div id="map"></div>
+
+</div>
+
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoid2FyYnVydG9uaHVudGVyIiwiYSI6ImNsMHp2aWFqdTJlankzY3BudWZwM210a2IifQ.YcgnkxozD0Sn5Eh6plILaw';
+
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/navigation-night-v1',
+    center: [-71.104081,42.365554],
+    zoom: 12
+});
+
+//setup markers
+var markerArray = [];
+
+markerArray[0] = new mapboxgl.Marker({
+	color: "#FF0000",//red
+	rotationAlignment: 'map'
+})
+.setLngLat([-71.192761, 42.357575])
+.addTo(map);
+markerArray[1] = new mapboxgl.Marker({
+	color: "#00ff00",//green
+	rotationAlignment: 'map'
+})
+.setLngLat([0, 0])
+.addTo(map);
+markerArray[2] = new mapboxgl.Marker({
+	color: "#0000ff",//blue
+	rotationAlignment: 'map'
+})
+.setLngLat([0,0])
+.addTo(map);
+markerArray[3] = new mapboxgl.Marker({
+	color: "#FF00ff",//prpl
+	rotationAlignment: 'map'
+})
+.setLngLat([0, 0])
+.addTo(map);
+markerArray[4] = new mapboxgl.Marker({
+	color: "#FFFF00",//yellow
+	rotationAlignment: 'map'
+})
+.setLngLat([0, 0])
+.addTo(map);
+markerArray[5] = new mapboxgl.Marker({
+	color: "#00FFFF",//Aqua
+	rotationAlignment: 'map'
+})
+.setLngLat([0, 0])
+.addTo(map);
+markerArray[6] = new mapboxgl.Marker({
+	color: "#FFFFFF",//White
+	rotationAlignment: 'map'
+})
+.setLngLat([0, 0])
+.addTo(map);
+markerArray[7] = new mapboxgl.Marker({
+	color: "#000000",//blak
+	rotationAlignment: 'map'
+})
+.setLngLat([0, 0])
+.addTo(map);
+markerArray[8] = new mapboxgl.Marker({
+	color: "#552500",//brown
+	rotationAlignment: 'map'
+})
+.setLngLat([0, 0])
+.addTo(map);
+markerArray[9] = new mapboxgl.Marker({
+	color: "#450080",//prpl
+	rotationAlignment: 'map'
+})
+.setLngLat([0, 0])
+.addTo(map);
+
+async function run(){
+    // get bus data    
+	const locations = await getBusLocations();
+
+	//go through the set of vehicles (there's 4 of them) and mark their locations
+	locations.forEach((vehicle, i) =>{
+		//console.log(locations[i].attributes.latitude);
+		let coordinates = [locations[i].attributes.longitude, locations[i].attributes.latitude];
+		markerArray[i].setLngLat(coordinates);
+		markerArray[i].setRotation(locations[i].attributes.bearing+45);
+	});
+
+	// timer
+	setTimeout(run, 15000);
+}
+
+// Request bus data from MBTA
+async function getBusLocations(){
+	const url = 'https://api-v3.mbta.com/vehicles?filter[route]=1&include=trip';
+	const response = await fetch(url);
+	const json     = await response.json();
+	return json.data;
+}
+
+run();
+
+</script>

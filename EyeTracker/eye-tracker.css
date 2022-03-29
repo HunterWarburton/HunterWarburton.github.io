@@ -1,0 +1,69 @@
+div#eyeHolder {
+    width: 10%;
+    height:10%;
+    position:relative;
+    }
+    
+    
+    .ufo {
+      font-size: 25vmin;
+      position:absolute;
+      width: 100%;
+      height:100%;
+      /*cursor: pointer;*/
+    }
+    
+    .eyes, .eye-lid {
+      text-align: center;
+      display: flex;
+      font-size: 0.65em;
+      width: 1em;
+      height: 1em;
+      position: absolute;
+      left: 0.25em;
+      top: 0.3em;
+    }
+    
+    .eye {
+      position: relative;
+      display: inline-block;
+      width: 35%;
+      height: 35%;
+      background-color: black;
+      border-radius: 50%;
+      box-shadow: 0 0 0 0.2em blue;
+    
+    }
+    
+    .eye-lid{
+      background-color: white;
+      border-radius: 100% 0px;
+      overflow: hidden;
+      box-shadow: 0.03em 0 0 0.1em rgba(0, 0, 0, 0.5);
+      animation: blink_eyes 7s infinite;
+    }
+    
+    .eye:after { /*pupil*/
+      --pupil-size: 0.2em;
+      position: absolute;
+      top: 0.05em;
+      left: 0.3em;
+      width: var(--pupil-size);
+      height: var(--pupil-size);
+      background: white;
+      border-radius: 50%;
+      content: " ";
+    }
+    
+    
+    @keyframes blink_eyes {
+      
+      0%, 2%, 50%, 52%, 100% {
+        transform: scalex(1) scaleY(1);
+        transform: rotate(45deg);
+      }
+      1%, 51% {
+        transform: scalex(1.1) scaleY(0.3);
+      }
+    }
+    

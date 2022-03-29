@@ -1,0 +1,137 @@
+<html>
+
+    <html>
+        <style>
+          body {text-align: center;}
+          h1   {text-align: center;}
+          </style>
+      <head>
+          <meta charset="utf-8" />
+          <title>Pac Factory</title>
+      
+          <h1><br><br>Pac Factory</h1>
+      
+          <link rel="stylesheet" href="../css/bootstrap.css">
+      
+          <style type="text/css">
+              .navbar {
+                float:inherit;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 45px;
+                z-index: 999;
+                position: fixed;
+                background-image: linear-gradient(to right, rgba(255,0,0,1), rgba(255,255,255,1), rgba(0,0,255,1));
+                color: black;
+              }
+      
+              .a:hover {
+                color: black;
+              }
+              
+      .center {
+        margin: auto;
+        width: 50%;
+        border: 3px solid black;
+        padding: 10px;
+        text-align: center;
+      }
+      
+      </style>
+
+
+<SCRIPT>
+  
+    const pacMen = [];
+
+    function setToRandom(scale) {
+        return {
+            x: Math.random() * scale,
+            y: Math.random() * scale
+        }
+    }
+    // Factory to make a PacMan 
+    function makePac() {
+        // returns an object with values scaled {x: 33, y: 21}
+        let velocity = setToRandom(10);
+        let position = setToRandom(200);
+        // Add image to div id = game
+        let game = document.getElementById('game');
+        let newimg = document.createElement('img');
+        newimg.style.position = 'absolute';
+        newimg.src = '../images/PacMan1.png';
+        newimg.width = 100;
+        newimg.style.left = position.x;
+        newimg.style.top = position.y;
+        game.appendChild(newimg);
+        // new style of creating an object
+        return {
+            position,
+            velocity,
+            newimg
+        }
+    }
+
+    function update() {
+        //loop over pacmen array and move each one and move image in DOM
+        pacMen.forEach((pac) => {
+            checkCollisions(pac)
+            pac.position.x += pac.velocity.x;
+            pac.position.y += pac.velocity.y;
+
+            pac.newimg.style.left = pac.position.x;
+            pac.newimg.style.top = pac.position.y;
+        })
+        setTimeout(update, 20);
+    }
+
+    function checkCollisions(pac) {
+        if (pac.position.x + pac.velocity.x + pac.newimg.width > window.innerWidth ||
+            pac.position.x + pac.velocity.x < 0) pac.velocity.x = -pac.velocity.x;
+        if (pac.position.y + pac.velocity.y + pac.newimg.height > window.innerHeight ||
+            pac.position.y + pac.velocity.y < 0) pac.velocity.y = -pac.velocity.y;
+    }
+
+    function makeOne() {
+        pacMen.push(makePac()); // add a new PacMan
+    }
+</SCRIPT>
+
+<body>
+  
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myDefaultNavbar1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+          <a class="navbar-brand" href="#" style="color: black">HUNTER WARBURTON</a></div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="myDefaultNavbar1">
+          <ul class="nav navbar-nav">
+           
+            <li><a href="../index.html">Home</a></li>
+            
+            <li><a href="../Starfield Shooter/StarField.html">Space Shooter</a></li>
+            <li><a href="../Fireworks/Fireworks.html">Fireworks</a></li>
+            <li><a href="../EyeTracker/Eye Tracker.html">Eyes</a></li>
+            <li><a href="../LiveBusTracker/LiveBusTracker.html">Bus Tracker</a></li>
+            <li class="active"><a href="Pac Factory.html">Pac Factory<span class="sr-only">(current)</span></a></li>
+            
+          </ul>
+    
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container-fluid -->
+    </nav>
+
+
+<div id='game' class="center">
+    <button onclick='makeOne()' width='200' height='30'>Add PacMan</button>
+    <button onclick='update()' width='200' height='30'>Move PacMen</button>
+
+</div>
+</body>
+
+</html>

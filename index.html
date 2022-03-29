@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap Portfolio template</title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="EyeTracker/eye-tracker.css">
+<style type="text/css">
+	.navbar {
+		float:inherit;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 45px;
+		z-index: 999;
+		position: fixed;
+		background-image: linear-gradient(to right, rgba(255,0,0,1), rgba(255,255,255,1), rgba(0,0,255,1));
+		color: black;
+	}
+	
+
+	
+	.a:hover {
+		color: black;
+		
+	}
+		.big-eyes-holder {
+		position: relative;
+		z-index: 998;
+	}
+	.bg-image {
+  /* The image used */
+  background-image: url("images/4NjTq5yY_4x.jpg");
+filter: blur(8px);
+  -webkit-filter: blur(8px);
+  
+
+  /* Full height */
+  height: 1920px;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat:repeat-y;
+  background-size:cover;
+		background-color: #000000;
+}
+/* Position text in the middle of the page/image */
+	
+.my-content {
+  /*background-color: rgb(0,0,0); /* Fallback color */
+  /*background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+	background-image: url("images/4NjTq5yY_4x.jpg");
+	background-position: center;
+  background-repeat:repeat-y;
+  background-size:cover;
+	
+  color: white;
+  font-weight: bold;
+  /*border: 3px solid #f1f1f1;*/
+  position:absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%,0%);
+  z-index: 2;
+  /*width: 80%;*/
+  /*padding: 20px;*/
+	max-width: 1175px;
+	margin: auto;
+  text-align: center;
+}
+	.well {
+		background-color: rgba(0,0,0, 0.9);
+	}
+	
+	
+	.billboard {
+		color: black;
+		
+		font:bold;
+		background-image: linear-gradient(to right, rgba(255,0,0,0.0), rgba(255,0,0,0.5), rgba(255,255,255,0.5), rgba(255,255,255,0.5), rgba(0,0,255,0.5), rgba(0,0,255,0.0));
+	}
+	.secondary-text {
+		color: black;
+		background-image: linear-gradient(to right, rgba(255,0,0,0.0), rgba(255,0,0,0.3), rgba(255,255,255,0.4), rgba(255,255,255,0.4), rgba(0,0,255,0.3), rgba(0,0,255,0.0));
+	}
+	
+.black-text {
+		color: white;
+		background-color: rgba(0,0,0, 0.9);
+	}
+	
+	.colorgrad {
+		border:thick;
+		border-style: solid;
+		border-color: black;
+		background-image: linear-gradient(to right, rgba(255,0,0,0.2), rgba(255,0,0,0.6), rgba(0,0,0,0.4), rgba(0,0,0,0.4), rgba(0,0,255,0.6), rgba(0,0,255,0.2));
+	}
+	
+	.li {
+		color: black;
+	}
+	
+	.myButton {
+	box-shadow: 3px 4px 0px 0px #8a2a21;
+	background:linear-gradient(to bottom, #e62210 5%, #d46a6a 100%);
+	background-color:#e62210;
+	border-radius:18px;
+	border:1px solid #0f0201;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:7px 25px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #810e05;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #d46a6a 5%, #e62210 100%);
+	background-color:#d46a6a;
+}
+.myButton:active, .myButtonB:active, .myButtonC:active {
+	position:relative;
+	top:1px;
+}
+
+	.myButtonB {
+	box-shadow: 3px 4px 0px 0px #2a218a;
+	background:linear-gradient(to bottom, #1022e6 5%, #6a6ad4 100%);
+	background-color:#1022e6;
+	border-radius:18px;
+	border:1px solid #01020f;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:7px 25px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #050e81;
+}
+.myButtonB:hover {
+	background:linear-gradient(to bottom, #6a6ad4 5%, #1022e6 100%);
+	background-color:#d46a6a;
+}
+
+	.myButtonC {
+	box-shadow: 3px 4px 0px 0px #2a2a2a;
+	background:linear-gradient(to bottom, #a6a6a6 5%, #6a6a6a 100%);
+	background-color:#a6a6a6;
+	border-radius:18px;
+	border:1px solid #020202;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:7px 25px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #0e0e0e;
+}
+.myButtonC:hover {
+	background:linear-gradient(to bottom, #6a6a6a 5%, #a6a6a6 100%);
+	background-color:#d46a6a;
+}
+	
+</style>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+
+
+
+<body>
+
+
+<nav class="navbar navbar-default">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myDefaultNavbar1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+      <a class="navbar-brand" href="#" style="color: black">HUNTER WARBURTON</a></div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="myDefaultNavbar1">
+      <ul class="nav navbar-nav">
+       
+        <li class="active"><a href="index.html">Home <span class="sr-only">(current)</span></a></li>
+        
+        <li><a href="StarfieldShooter/StarField.html">Space Shooter</a></li>
+        <li><a href="Fireworks/Fireworks.html">Fireworks</a></li>
+        <li><a href="EyeTracker/Eye Tracker.html">Eyes</a></li>
+        <li><a href="LiveBusTracker/LiveBusTracker.html">Bus Tracker</a></li>
+        <li><a href="PacFactory/Pac Factory.html">Pac Factory</a></li>
+        <!--<li><a onclick = "createANewEye()">EYE</a></li>-->
+        
+      </ul>
+
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container-fluid -->
+</nav>
+
+<div id="eyesMuhGuy">
+<div class="big-eyes-holder" style="float: left; left: 5%">
+	<div class="eyeHolder" onclick="remove(this)">
+    <div class="ufo">
+      <div class="eye-lid">
+        <div class="eyes">
+          <div class="eye" style="box-shadow: 0 0 0 0.2em red;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="big-eyes-holder" style="float: right;left: -25%;">
+	<div class="eyeHolder" onclick="remove(this)">
+    <div class="ufo">
+      <div class="eye-lid">
+        <div class="eyes">
+          <div class="eye"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+	
+	<div class="big-eyes-holder" style="float: left; left: 5%; bottom: -25em;">
+	<div class="eyeHolder" onclick="remove(this)" >
+    <div class="ufo">
+      <div class="eye-lid" >
+        <div class="eyes">
+          <div class="eye" style="box-shadow: 0 0 0 0.2em red;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="big-eyes-holder" style="float: right;left: -23%; bottom: -25em">
+	<div class="eyeHolder" onclick="remove(this)">
+    <div class="ufo">
+      <div class="eye-lid">
+        <div class="eyes">
+          <div class="eye"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+	
+	
+</div>
+
+
+
+
+<div class="bg-image"> </div>
+
+  
+<div class="my-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 text-center col-lg-12 billboard">
+        <h1>
+        HUNTER WARBURTON
+       </h1>
+        <!--<p>Digital Designer</p>-->
+      </div>
+    </div>
+  </div>
+  <!--
+  <section>
+   
+    <div class="container well">
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6">
+          <div class="media">
+            <div class="media-left"> <a href="#"> <img class="media-object" src="images/35X35.gif" alt="..."></a></div>
+            <div class="media-body">
+              <h2 class="media-heading">Media heading</h2>
+              Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6">
+          <div class="media">
+            <div class="media-left"> <a href="#"> <img class="media-object" src="images/35X35.gif" alt="..."></a></div>
+            <div class="media-body">
+              <h2 class="media-heading">Media heading</h2>
+              Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6">
+          <div class="media">
+            <div class="media-left"> <a href="#"> <img class="media-object" src="images/35X35.gif" alt="..."></a></div>
+            <div class="media-body">
+              <h2 class="media-heading">Media heading</h2>
+              Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+  -->
+  
+  
+  
+  <section>
+    <div class="container">
+     
+     
+     
+      <div class="row">
+        <div class="col-lg-12 text-center secondary-text">
+   			
+        
+         
+          <h3>Digital Designer</h3>
+          <p>Lastest Work</p>
+        </div>
+      </div>
+      
+      <!--SECTION
+      
+      
+      -->
+      <div class="row">
+        <div class="col-md-6 text-center"> <a href="StarfieldShooter/StarField.html"><img src="images/Space Shooter.jpg" alt="" style="width: 400px; height:400px; border:thick; border-color: black; border-style: solid; position:sticky; left: 0px;"></a>
+         <div class="black-text col-md-6 text-center col-lg-12">
+          <div class="col-md-6 text-center col-lg-8">
+           <h3>Space Shooter - Starfield</h3>
+           <h6>A javascript coding exercise for interactivity and game design practice. Uses the canvas method, Spritesheets, and the user's mouse</h6>
+          </div>
+      <a href="https://www.github" class="myButton">GitHub Repo</a>
+       </div>
+        </div>
+        <div class="col-md-6 text-center"> <a href="Fireworks/Fireworks.html"><img src="images/Fireworks.jpg" alt="" style="width: 400px; height: 400px; border:thick; border-color: black; border-style: solid; right:0px;"></a>
+         <div class="black-text col-md-6 text-center col-lg-12">
+          <div class="col-md-6 text-center col-lg-8">
+            <h3>Fireworks Simulator</h3>
+            <h6>Particle simulator to mimic fireworks. Includes physics. Click anywhere on the canvas</h6>
+          </div>
+      <a href="https://www.github" class="myButtonB">GitHub Repo</a>
+       </div>
+        </div>
+      </div>
+      <div class="row colorgrad">
+        <div class="col-md-3 text-center col-sm-6 col-xs-6 col-lg-4">
+			<a href="LiveBusTracker/LiveBusTracker.html"><img src="images/LiveBusTracker.jpg" alt="" style="width: 250px; height: 200px"></a>
+        <div class="black-text">
+           <h3>Live Bus Tracker</h3>
+           <a href="https://www.github" class="myButton">GitHub Repo</a>
+          </div>
+        
+        </div>
+        <div class="col-md-3 text-center col-sm-6 col-xs-6 col-lg-4">
+        <a href="EyeTracker/EyeTracker.html"><img src="images/EyeTracker.jpg" alt="" style="width: 250px; height: 200px"></a>
+        <div class="black-text">
+           <h3>Following Eyes</h3>
+           <a href="https://www.github" class="myButtonC">GitHub Repo</a>
+          </div>
+        </div>
+        <div class="col-md-3 text-center col-sm-6 col-xs-6 hidden-xs hidden-sm col-lg-4">
+        <a href="PacFactory/pacFactory.html"><img src="images/PacFactory.jpg" alt="" style="width: 250px; height: 200px"></a>
+        <div class="black-text">
+           <h3>Pac Factory</h3>
+           <a href="https://www.github" class="myButtonB">GitHub Repo</a>
+          </div>
+        </div>
+      </div>
+      <!--<hr>
+      <div class="row colorgrad">
+        <div class="col-md-3 text-center col-sm-6 col-xs-6"><img src="images/200x200.gif" alt=""></div>
+        <div class="col-md-3 text-center col-sm-6 col-xs-6"><img src="images/200x200.gif" alt=""></div>
+        <div class="col-md-3 text-center col-sm-6 col-xs-6 hidden-xs hidden-sm"><img src="images/200x200.gif" alt=""></div>
+        <div class="col-md-3 text-center col-sm-6 col-xs-6 hidden-xs hidden-sm"><img src="images/200x200.gif" alt=""></div>
+      </div>
+      -->
+    </div>
+  </section>
+  <hr>
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="black-text text-center col-lg-6">
+          <h1>Follow Me On Youtube</h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, magni, doloribus, possimus eum sapiente deleniti doloremque fugit ut expedita molestiae iusto debitis eveniet modi obcaecati ipsam quos quis labore dicta.</p>
+          <a href="https://www.youtube.com/channel/UC0JxQEztaT4h-szaYkyRoMg" class="myButton">Youtube</a>
+          <div></div>
+          <h1>My Javascript Video Series</h1>
+          <p>Follow along with my video blog as I practice programming and design while making new and exciting projects </p>
+          <a href="https://www.youtube.com/playlist?list=PL-ug4Ye4hd1ACCl1ZWezcBSfRs8eLky5z" class="myButton">Learn JavaScript Playlist</a>
+
+		  </div>
+       
+        <div class="col-lg-6">
+		<img src="images/400x400.gif" alt="" style="width: 350px; height: 350px;">  
+     </div>
+      </div>
+    </div>
+  </section>
+  <hr>
+  <div class="section well">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-4">
+          <h3 class="text-center">WHO AM I</h3>
+          <h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus, ducimus, sit, quibusdam quidem recusandae veniam eos quod error nisi repellat excepturi laboriosam aspernatur suscipit possimus consectetur dolores nihil labore quas eius illo accusamus nulla sed blanditiis porro accusantium. Perspiciatis, perferendis!</h5>
+        </div>
+        <div class="col-lg-4 col-md-4">
+          <h3 class="text-center">&nbsp;<strong>&nbsp;</strong></h3>
+          <address class="text-center">
+          <strong>Reximus Games, LLC.</strong><br>
+          <strong>StormHunter Limited</strong><br>
+          United States<br>
+          </address>
+        </div>
+        <div class="col-lg-4 col-md-4">
+          <h3 class="text-center">CONTACT ME</h3>
+          <form>
+<a href="mailto:warburtonhunter@gmail.com" class="myButtonB">Email</a>
+          
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <p>Copyright © Hunter Warburton. All rights reserved.&nbsp;</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="js/jquery-1.11.3.min.js"></script> 
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="js/bootstrap.js"></script>
+<script src="EyeTracker/eyeTracker.js"></script>
+
+
+</body>
+
+</html>
